@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import "./../css/new-menu.css"; // lightweight styling import (reuse existing styles)
 
@@ -161,9 +161,9 @@ const Auth = () => {
                 {mode === "login" ? (
                   <p>
                     Don't have an account?{' '}
-                    <button className="btn" onClick={() => setMode("signup")}>
-                      Create one
-                    </button>
+                    <NavLink to="/auth" className="btn" onClick={() => setMode("signup")}>
+                      Register
+                    </NavLink>
                   </p>
                 ) : (
                   <p>

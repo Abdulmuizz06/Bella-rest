@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 
@@ -15,24 +15,24 @@ const Header = () => {
         </div>
         <ul className="nav-menu">
           <li className="nav-item">
-            <Link to="/" className="nav-link">
+            <NavLink to="/" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               Home
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to="/menu" className="nav-link">
+            <NavLink to="/menu" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               Menu
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to="/order" className="nav-link">
+            <NavLink to="/order" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               Order
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to="/build-menu" className="nav-link">
+            <NavLink to="/build-menu" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
               Build Menu
-            </Link>
+            </NavLink>
           </li>
           {user ? (
             <>
@@ -55,9 +55,9 @@ const Header = () => {
             </>
           ) : (
             <li className="nav-item">
-              <Link to="/auth" className="nav-link">
+              <NavLink to="/auth" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
                 Login
-              </Link>
+              </NavLink>
             </li>
           )}
         </ul>
