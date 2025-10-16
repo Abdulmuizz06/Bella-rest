@@ -8,6 +8,9 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Order from "./pages/Order";
 import BuildMenu from "./pages/Build-menu";
+import Auth from "./pages/Auth";
+import Login from "./pages/Login";
+import Logout from "./pages/Logout";
 
 import Header from "./component/Header";
 import Footer from "./component/Footer";
@@ -24,6 +27,9 @@ function App() {
   <Route path="/about" element={<About />} />
   <Route path="/order" element={<Order />} />
   <Route path="/build-menu" element={<BuildMenu />} />
+  <Route path="/auth" element={<Auth />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/logout" element={<Logout />} />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -1,10 +1,40 @@
 import "./../css/contact.css";
+import { useState } from "react";
+import { databases } from "../lib/appwrite";
 
 const Contact = () => {
+    const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+    const [status, setStatus] = useState(null);
 
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-    
-  return (
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus({ type: 'loading' });
+        try {
+            const dbId = import.meta.env.VITE_APPWRITE_DATABASE_ID;
+            const collectionId = import.meta.env.VITE_APPWRITE_CONTACTS_COLLECTION_ID;
+            if (!dbId || !collectionId) throw new Error('Database or Collection ID not configured in .env');
+
+            await databases.createDocument(dbId, collectionId, 'unique()', {
+                name: form.name,
+                email: form.email,
+                phone: form.phone,
+                subject: form.subject,
+                message: form.message,
+                createdAt: new Date().toISOString()
+            });
+
+            setStatus({ type: 'success', message: 'Message sent. Thank you!' });
+            setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+        } catch (err) {
+            console.error(err);
+            setStatus({ type: 'error', message: err.message || 'Failed to send message' });
+        }
+    };
+
+  
+    return (
       <main>
         <section className="contact-hero">
             <div className="container">
@@ -18,22 +48,22 @@ const Contact = () => {
                 <div className="contact-layout">
                     <div className="contact-form-section">
                         <h2>Send Us a Message</h2>
-                        <form className="contact-form" id="contactForm">
+                        <form className="contact-form" id="contactForm" onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="name">Full Name</label>
-                                <input type="text" id="name" name="name" required className="form-input" />
+                                <input value={form.name} onChange={handleChange} type="text" id="name" name="name" required className="form-input" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email">Email Address</label>
-                                <input type="email" id="email" name="email" required className="form-input" />
+                                <input value={form.email} onChange={handleChange} type="email" id="email" name="email" required className="form-input" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" className="form-input" />
+                                <input value={form.phone} onChange={handleChange} type="tel" id="phone" name="phone" className="form-input" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="subject">Subject</label>
-                                <select id="subject" name="subject" required className="form-select">
+                                <select value={form.subject} onChange={handleChange} id="subject" name="subject" required className="form-select">
                                     <option value="">Select a subject</option>
                                     <option value="reservation">Reservation</option>
                                     <option value="feedback">Feedback</option>
@@ -44,10 +74,13 @@ const Contact = () => {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="message">Message</label>
-                                <textarea id="message" name="message" rows="5" required className="form-textarea" placeholder="Tell us how we can help you..."></textarea>
+                                <textarea value={form.message} onChange={handleChange} id="message" name="message" rows="5" required className="form-textarea" placeholder="Tell us how we can help you..."></textarea>
                             </div>
                             <button type="submit" className="btn btn-primary">Send Message</button>
                         </form>
+                        {status && status.type === 'loading' && <p>Sending...</p>}
+                        {status && status.type === 'success' && <p style={{ color: 'green' }}>{status.message}</p>}
+                        {status && status.type === 'error' && <p style={{ color: 'red' }}>{status.message}</p>}
                     </div>
 
                     <div className="contact-info-section">

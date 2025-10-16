@@ -1,8 +1,26 @@
 import "./../css/home.css";
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Home = () => {
+  const location = useLocation();
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    if (location?.state?.loggedOut) {
+      setToast('You have been logged out');
+      const t = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [location]);
+
   return (
     <main>
+      {toast && (
+        <div style={{ position: 'fixed', top: 16, right: 16, background: '#333', color: '#fff', padding: '8px 12px', borderRadius: 6, zIndex: 9999 }}>
+          {toast}
+        </div>
+      )}
       {/*  Hero Section  */}
       <section className="hero">
         <div className="container">

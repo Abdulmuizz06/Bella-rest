@@ -1,6 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
 
 const Header = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [loggingOut, setLoggingOut] = useState(false);
+
   return (
     <nav className="navbar">
       <div className="nav-container">
@@ -28,6 +34,32 @@ const Header = () => {
               Build Menu
             </Link>
           </li>
+          {user ? (
+            <>
+              <li className="nav-item nav-user">Hello, {user.name || user.email}</li>
+              <li className="nav-item">
+                <button
+                  className="nav-link btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const ok = window.confirm('Are you sure you want to log out?');
+                    if (ok) {
+                      // navigate to logout page which handles the logout
+                      window.location.href = '/logout';
+                    }
+                  }}
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <li className="nav-item">
+              <Link to="/auth" className="nav-link">
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
         <div className="hamburger">
           <span className="bar"></span>
