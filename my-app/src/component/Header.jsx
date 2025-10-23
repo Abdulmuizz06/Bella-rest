@@ -1,11 +1,12 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [loggingOut, setLoggingOut] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleHamburgerClick = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   return (
     <nav className="navbar">
@@ -13,55 +14,56 @@ const Header = () => {
         <div className="nav-logo">
           <h2>Bella Vista</h2>
         </div>
-        <ul className="nav-menu">
+        <ul className={`nav-menu ${menuOpen ? " active" : ""}`}>
           <li className="nav-item">
-            <NavLink to="/" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
+              onClick={() => setMenuOpen(false)}
+            >
               Home
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/menu" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
+            <NavLink
+              to="/menu"
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
+              onClick={() => setMenuOpen(false)}
+            >
               Menu
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/order" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
+            <NavLink
+              to="/order"
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
+              onClick={() => setMenuOpen(false)}
+            >
               Order
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/build-menu" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
+            <NavLink
+              to="/build-menu"
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
+              onClick={() => setMenuOpen(false)}
+            >
               Build Menu
             </NavLink>
           </li>
-          {user ? (
-            <>
-              <li className="nav-item nav-user">Hello, {user.name || user.email}</li>
-              <li className="nav-item">
-                <button
-                  className="nav-link btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const ok = window.confirm('Are you sure you want to log out?');
-                    if (ok) {
-                      // navigate to logout page which handles the logout
-                      window.location.href = '/logout';
-                    }
-                  }}
-                >
-                  Logout
-                </button>
-              </li>
-            </>
-          ) : (
-            <li className="nav-item">
-              <NavLink to="/auth" className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}>
-                Login
-              </NavLink>
-            </li>
-          )}
         </ul>
-        <div className="hamburger">
+        <div
+          className={`hamburger`}
+          onClick={handleHamburgerClick}
+        >
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>

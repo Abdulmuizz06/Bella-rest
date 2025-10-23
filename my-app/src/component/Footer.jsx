@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-// Footer component
 const Footer = () => {
   return (
     <footer className="footer">
@@ -17,16 +16,19 @@ const Footer = () => {
             <h4>Quick Links</h4>
             <ul>
               <li>
-                <Link to="/menu">Menu</Link>
+                <NavLink to="/menu">Menu</NavLink>
               </li>
               <li>
-                <Link to="/order">Order Online</Link>
+                <NavLink to="/order">Order Online</NavLink>
               </li>
               <li>
-                <Link to="/about">About Us</Link>
+                <NavLink to="/About">About Us</NavLink>
               </li>
               <li>
-                <Link to="/contact">Contact</Link>
+                <NavLink to="/contact">Contact</NavLink>
+              </li>
+              <li>
+                <NavLink to="/new-menu">New-menu</NavLink>
               </li>
             </ul>
           </div>
@@ -45,4 +47,4 @@ const Footer = () => {
   );
 }
 
-export default Footer;
+export default Footer

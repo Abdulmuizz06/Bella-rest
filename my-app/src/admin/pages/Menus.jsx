@@ -1,4 +1,4 @@
-const AdminMenu = ({user}) => {
+const MenuManagement = ({user}) => {
   return (
     <main className="admin-main">
       <div className="admin-container">
@@ -45,4 +45,4 @@ const AdminMenu = ({user}) => {
   );
 }
 
-export default AdminMenu
+export default MenuManagement;

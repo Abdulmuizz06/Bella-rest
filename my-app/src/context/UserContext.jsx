@@ -1,7 +1,7 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect } from "react";
 import { account } from "../lib/appwrite";
 
-const UserContext = createContext({ user: null, setUser: () => {} });
+const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -9,19 +9,10 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const getLoggedInUser = async () => {
       try {
-        if (!account || typeof account.get !== "function") {
-          // Appwrite account object not available or doesn't support .get()
-          setUser(null);
-          return;
-        }
-
         const currentUser = await account.get();
-        // account.get() returns the user if authenticated, otherwise throws
-        console.log("UserContext: account.get() ->", currentUser);
-        setUser(currentUser ?? null);
-      } catch (err) {
-        // Not authenticated or network error - keep user as null
-        console.debug("UserContext: could not get account user:", err?.message || err);
+        setUser(currentUser);
+      } catch (error) {
+        console.log("No active session:", error.message);
         setUser(null);
       }
     };
@@ -29,13 +20,26 @@ const UserProvider = ({ children }) => {
     getLoggedInUser();
   }, []);
 
+  // Login function to create session and update user state
+  const login = async (email, password) => {
+    try {
+      await account.createSession(email, password);
+      const currentUser = await account.get();
+      setUser(currentUser);
+      alert("Logged in successfully!");
+      return true;
+    } catch (error) {
+      console.error("Login failed:", error.message);
+      alert(`Login failed: ${error.message}`);
+      return false;
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, login }}>
       {children}
     </UserContext.Provider>
   );
 };
 
-const useUser = () => useContext(UserContext);
-
-export { UserContext, UserProvider, useUser };
+export { UserContext, UserProvider };

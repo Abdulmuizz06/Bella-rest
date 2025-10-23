@@ -2,7 +2,7 @@ import { useState } from "react";
 import { menuData } from "./db";
 import { useNavigate } from "react-router-dom";
 
-const NewMenu = () => {
+const MainMenu = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     menuName: "",
@@ -13,12 +13,19 @@ const NewMenu = () => {
   });
 
   const handleAddNewMenu = (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      const lastItem = menuData["desserts"];
-      const id = lastItem[lastItem.length - 1].id + 1;
+      if (!formData.menuCategory || !menuData[formData.menuCategory]) {
+        alert("Please select a valid category");
+        return;
+      }
+
+      const categoryItems = menuData[formData.menuCategory];
+      const lastId = categoryItems.length > 0 ? categoryItems[categoryItems.length - 1].id : 0;
+      const newId = lastId + 1;
+
       const newMenuItem = {
-        id: id,
+        id: newId,
         name: formData.menuName,
         description: formData.menuDescription,
         price: parseFloat(formData.menuPrice),
@@ -26,10 +33,10 @@ const NewMenu = () => {
         tags: [],
       };
 
-      menuData[formData.menuCategory].push(newMenuItem);
-      // alert("New menu item added successfully!");
+      // Clone the array to avoid mutating imported data directly (optional, depends on your setup)
+      menuData[formData.menuCategory] = [...categoryItems, newMenuItem];
 
-      // Reset form after submission
+      // Reset form
       setFormData({
         menuName: "",
         menuDescription: "",
@@ -41,14 +48,16 @@ const NewMenu = () => {
       navigate("/menu");
     } catch (error) {
       console.error("Error adding new menu item:", error);
+      alert("Failed to add new menu item. Please try again.");
     }
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -65,6 +74,7 @@ const NewMenu = () => {
           required
         />
       </div>
+
       <div className="form-group">
         <label htmlFor="menuDescription">Description:</label>
         <textarea
@@ -76,6 +86,7 @@ const NewMenu = () => {
           rows="3"
         ></textarea>
       </div>
+
       <div className="form-group">
         <label htmlFor="menuPrice">Price:</label>
         <input
@@ -89,6 +100,7 @@ const NewMenu = () => {
           required
         />
       </div>
+
       <div className="form-group">
         <label htmlFor="menuCategory">Category:</label>
         <select
@@ -107,6 +119,7 @@ const NewMenu = () => {
           <option value="desserts">Desserts</option>
         </select>
       </div>
+
       <div className="form-group">
         <label htmlFor="menuImage">Image URL:</label>
         <input
@@ -118,6 +131,7 @@ const NewMenu = () => {
           onChange={handleChange}
         />
       </div>
+
       <button className="btn btn-primary" type="submit">
         Add Menu
       </button>
@@ -125,4 +139,4 @@ const NewMenu = () => {
   );
 };
 
-export default NewMenu;
+export default MainMenu;

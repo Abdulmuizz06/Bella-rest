@@ -1,8 +1,8 @@
-import './../css/new-menu.css';
-import NewMenu from "../component/forms/NewMenu";
+import './../css/NewMenu.css';
+import MainMenu from '../component/forms/NewMenu';
 
 
-const NewMenuPage = () => {
+const NewMenu = () => {
   return (
     <main>
       <section className='menu-hero'>
@@ -18,7 +18,7 @@ const NewMenuPage = () => {
                         <h2>
                             Add New Menu Item
                         </h2>
-                        <NewMenu />
+                        <MainMenu/>
                     </div>
 
                     
@@ -29,4 +29,4 @@ const NewMenuPage = () => {
   );
 };
 
-export default NewMenuPage;
+export default NewMenu;

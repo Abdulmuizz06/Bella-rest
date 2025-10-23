@@ -1,4 +1,4 @@
-const AdminOrder = ({user}) => {
+const Orders = ({user}) => {
   return (
     <main className="admin-main">
       <div className="admin-container">
@@ -49,4 +49,4 @@ const AdminOrder = ({user}) => {
   );
 };
 
-export default AdminOrder;
+export default Orders;
