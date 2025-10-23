@@ -13,7 +13,7 @@ import NewMenuItem from "./pages/NewMenu";
 
 import Login from "./auth/login";
 import Register from "./auth/register";
-import PublicRoute from "./auth/PublicRoute";
+import PublicRoute from "./auth/publicRoute";
 
 import Dashboard from "./admin/pages/dashboard"; 
 import Customer from "./admin/pages/Customer";
